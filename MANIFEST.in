@@ -1,0 +1,4 @@
+include README.md
+recursive-include thingiverse-downloader/templates *
+recursive-include thingiverse-downloader/translations *
+recursive-include thingiverse-downloader/static *

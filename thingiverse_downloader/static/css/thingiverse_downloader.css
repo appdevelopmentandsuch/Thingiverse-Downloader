@@ -1,0 +1,50 @@
+.thingiverse-downloader {
+  display: flex;
+  flex-direction: column;
+}
+
+.thingiverse-downloader-input-title {
+  font-weight: bold;
+  margin-right: 8px;
+}
+
+.thingiverse-downloader-settings-row {
+  display: flex;
+  flex-direction: row;
+}
+
+.thingiverse-downloader-settings-label {
+  width: auto !important;
+}
+
+.thingiverse-downloader-settings-input {
+  margin-left: 8px !important;
+}
+
+.thingiverse-downloader-input-wrapper {
+  display: flex;
+  flex-direction: row;
+  align-items: baseline;
+  margin: 4px;
+  padding: 4px;
+}
+
+.thingiverse-downloader-settings-container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.thingiverse-downloader-loading-icon {
+  width: fit-content;
+  margin: 4px;
+  padding: 4px;
+}
+
+.thingiverse-downloader-result-state {
+  color: #333;
+  font-size: 14px;
+  -webkit-text-size-adjust: 100%;
+  margin: 4px;
+  padding: 4px;
+}

@@ -1,8 +1,18 @@
 # Thingiverse-Downloader
 
-[![CodeFactor](https://www.codefactor.io/repository/github/appdevelopmentandsuch/thingiverse-downloader/badge)](https://www.codefactor.io/repository/github/appdevelopmentandsuch/thingiverse-downloader)
-
 Download and extract a thing from Thingiverse to your Octoprint instance, given a URL to the thing
+
+[![CodeFactor](https://www.codefactor.io/repository/github/appdevelopmentandsuch/thingiverse-downloader/badge)](https://www.codefactor.io/repository/github/appdevelopmentandsuch/thingiverse-downloader)
+[![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://GitHub.com/appdevelopmentandsuch/Thingiverse-Downloader/graphs/commit-activity)
+[![GitHub license](https://img.shields.io/github/license/appdevelopmentandsuch/Thingiverse-Downloader.svg)](https://github.com/appdevelopmentandsuch/Thingiverse-Downloader/blob/master/LICENSE)
+[![GitHub release](https://img.shields.io/github/release/appdevelopmentandsuch/Thingiverse-Downloader.svg)](https://GitHub.com/appdevelopmentandsuch/Thingiverse-Downloader/releases/)
+[![GitHub tag](https://img.shields.io/github/tag/appdevelopmentandsuch/Thingiverse-Downloader.svg)](https://GitHub.com/appdevelopmentandsuch/Thingiverse-Downloader/tags/)
+[![Github all releases](https://img.shields.io/github/downloads/appdevelopmentandsuch/Thingiverse-Downloader/total.svg)](https://GitHub.com/appdevelopmentandsuch/Thingiverse-Downloader/releases/)
+[![GitHub stars](https://img.shields.io/github/stars/appdevelopmentandsuch/Thingiverse-Downloader.svg?style=social&label=Star&maxAge=2592000)](https://GitHub.com/appdevelopmentandsuch/Thingiverse-Downloader/stargazers/)
+[![GitHub issues](https://img.shields.io/github/issues/appdevelopmentandsuch/Thingiverse-Downloader.svg)](https://GitHub.com/appdevelopmentandsuch/Thingiverse-Downloader/issues/)
+[![GitHub issues-closed](https://img.shields.io/github/issues-closed/appdevelopmentandsuch/Thingiverse-Downloader.svg)](https://GitHub.com/appdevelopmentandsuch/Thingiverse-Downloader/issues?q=is%3Aissue+is%3Aclosed)
+
+![Thingiverse-Downloader-Demo](https://user-images.githubusercontent.com/22528729/131264980-e5229140-c8f1-4535-a89e-3bcc0131b9cf.gif)
 
 ## Setup
 
@@ -18,6 +28,7 @@ or manually using this URL:
 
 ## Configuration
 
-| Settings | Description |
-| API Key | An API key / App Key acquired from the Thingiverse Developer Console found [here](https://www.thingiverse.com/developers).|
-| Output Directory | The desired directory you wish to have the Thingiverse thing downloaded to. Recommend using `/home/pi/.octoprint/uploads/models` |
+| Settings           | Description                                                                                                                      |
+|--------------------|----------------------------------------------------------------------------------------------------------------------------------|
+| *API Key*          | An API key / App Key acquired from the Thingiverse Developer Console found [here](https://www.thingiverse.com/developers).       |
+| *Output Directory* | The desired directory you wish to have the Thingiverse thing downloaded to. Recommend using `/home/pi/.octoprint/uploads/models` |

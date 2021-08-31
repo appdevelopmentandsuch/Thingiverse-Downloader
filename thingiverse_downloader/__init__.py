@@ -66,6 +66,8 @@ class ThingiverseDownloaderPlugin(octoprint.plugin.TemplatePlugin,
             if name is None:
                 return self.return_response(result, "A name could not be parsed from the Thingiverse item.")
 
+            name = name.encode('ascii', 'ignore')
+
             FILES_URL = "{0}/{1}/files/{2}".format(BASE_URL, THING_ID,
                                                    PARAM_ACCESS_TOKEN)
 

@@ -10,6 +10,13 @@ $(function () {
 
         self.result = ko.observable();
 
+        self.thingUrl.subscribe(function (newValue) {
+            if (newValue === "") {
+                self.loading(false);
+                self.result(null);
+            }
+        });
+
         self.onBeforeBinding = function () {
             self.thingUrl("");
             self.loading(false);
@@ -33,6 +40,7 @@ $(function () {
 
         self.downloadUrlFiles = function () {
             self.loading(true);
+            self.result(null);
             $.ajax({
                 url: API_BASEURL + "plugin/thingiverse_downloader",
                 type: "POST",

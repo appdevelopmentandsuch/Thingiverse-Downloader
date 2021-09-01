@@ -16,6 +16,8 @@ Download and extract a thing from Thingiverse to your Octoprint instance, given 
 
 ## Setup
 
+![Thingiverse-Downloader-Install](https://user-images.githubusercontent.com/22528729/131595461-adb80ed1-4f57-4f24-ade5-fa84749ae93a.gif)
+
 Install via the bundled [Plugin Manager](https://docs.octoprint.org/en/master/bundledplugins/pluginmanager.html)
 or manually using this URL:
 

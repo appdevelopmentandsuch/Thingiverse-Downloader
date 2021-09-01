@@ -10,9 +10,8 @@ $(function () {
 
         self.result = ko.observable();
 
-        self.thingUrl.subscribe(function (newValue) {
-            if (newValue === "") {
-                self.loading(false);
+        self.thingUrl.subscribe(function () {
+            if (self.result() != null && self.loading() === false) {
                 self.result(null);
             }
         });

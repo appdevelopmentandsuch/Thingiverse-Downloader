@@ -10,16 +10,40 @@ $(function () {
 
         self.result = ko.observable();
 
+        self.previewUrl = ko.observable();
+
         self.thingUrl.subscribe(function () {
-            if (self.result() != null && self.loading() === false) {
-                self.result(null);
-            }
+            self.fetchPreviewImage();
         });
+
+        self.fetchPreviewImage = function () {
+            $.ajax({
+                url: API_BASEURL + "plugin/thingiverse_downloader",
+                type: "POST",
+                dataType: "json",
+                data: JSON.stringify({
+                    command: "preview",
+                    url: self.thingUrl(),
+                }),
+                contentType: "application/json; charset=UTF-8",
+            })
+                .then(function ({ result, error }) {
+                    if (error == undefined) {
+                        self.previewUrl(result);
+                    } else {
+                        self.previewUrl("");
+                    }
+                })
+                .catch(function () {
+                    self.previewUrl("");
+                });
+        };
 
         self.onBeforeBinding = function () {
             self.thingUrl("");
             self.loading(false);
             self.result(null);
+            self.fetchPreviewImage();
         };
 
         self.getResultState = function () {

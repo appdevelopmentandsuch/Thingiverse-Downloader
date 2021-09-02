@@ -35,15 +35,16 @@
   align-items: flex-start;
 }
 
-.thingiverse-downloader-loading-icon {
-  width: fit-content;
+.thingiverse-downloader-result-state {
+  font-size: 14px;
+  -webkit-text-size-adjust: 100%;
   margin: 4px;
   padding: 4px;
 }
 
-.thingiverse-downloader-result-state {
-  font-size: 14px;
-  -webkit-text-size-adjust: 100%;
+.thingiverse-downloader-preview-img {
+  width: 50% !important;
+  height: 50% !important;
   margin: 4px;
   padding: 4px;
 }

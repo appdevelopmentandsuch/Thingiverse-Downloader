@@ -1,10 +1,12 @@
 <div class="thingiverse-downloader">
     <div class="thingiverse-downloader-input-wrapper">
         <span class="thingiverse-downloader-input-title">Thingiverse URL</span>
-        <input type="text" class="input-large" data-bind="value: thingUrl"/>
+        <input type="text" class="input-large" data-bind="value: thingUrl, disable: loading"/>
         <button class="btn btn-primary" data-bind="click: downloadUrlFiles">{{ _('Download') }}</button>
     </div>
 
     <span class="thingiverse-downloader-result-state" data-bind="html: getResultState()"></span>
-    <i class="fas fa-spinner fa-spin fa-2x thingiverse-downloader-loading-icon" data-bind="visible: loading"></i>
+    <div data-bind="visible: previewUrl !== ''">
+        <img class="thingiverse-downloader-preview-img" data-bind="attr: { src: previewUrl }"></img>
+    </div>
 </div>

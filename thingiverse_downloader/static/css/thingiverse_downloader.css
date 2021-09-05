@@ -3,9 +3,8 @@
   flex-direction: column;
 }
 
-.thingiverse-downloader-input-title {
-  font-weight: bold;
-  margin-right: 8px;
+.thingiverse-downloader-thing-input {
+  width: -webkit-fill-available;
 }
 
 .thingiverse-downloader-settings-row {
@@ -23,10 +22,18 @@
 
 .thingiverse-downloader-input-wrapper {
   display: flex;
+  flex-direction: column;
+  /* align-items: baseline; */
+  margin: 4px 0;
+  padding: 8px;
+  background: #eeeeee;
+  border-radius: 10px;
+}
+
+.thingiverse-downloader-input-row {
+  display: flex;
   flex-direction: row;
   align-items: baseline;
-  margin: 4px;
-  padding: 4px;
 }
 
 .thingiverse-downloader-settings-container {
@@ -35,15 +42,21 @@
   align-items: flex-start;
 }
 
-.thingiverse-downloader-loading-icon {
-  width: fit-content;
+.thingiverse-downloader-preview-name {
+  font-size: larger;
+  margin: 0 4px;
+  padding: 0 4px;
+  color: #393e46;
+}
+
+.thingiverse-downloader-preview-img {
+  width: 50% !important;
   margin: 4px;
   padding: 4px;
 }
 
-.thingiverse-downloader-result-state {
-  font-size: 14px;
-  -webkit-text-size-adjust: 100%;
-  margin: 4px;
-  padding: 4px;
+.thingiverse-downloader-preview-container-visible {
+  height: 260px;
+  background: #eeeeee;
+  border-radius: 10px;
 }

@@ -1,8 +1,31 @@
 <div class="thingiverse-downloader">
     <div class="thingiverse-downloader-input-wrapper">
-        <span class="thingiverse-downloader-input-title">Thingiverse URL</span>
-        <input type="text" class="input-large" data-bind="value: thingUrl"/>
-        <button class="btn btn-primary" data-bind="click: downloadUrlFiles">{{ _('Download') }}</button>
+        <div class="thingiverse-downloader-input-row">
+            <input 
+                type="text" 
+                class="input-large thingiverse-downloader-thing-input" 
+                data-bind="value: thingUrl, disable: loading" 
+                title="i.e. https://www.thingiverse.com/thing:123456 or 123456"
+                placeholder="Thingiverse URL or Thing ID"
+            >
+            <button class="btn" data-bind="click: downloadUrlFiles, disable: loading() || thingUrl() === '' || result() != null, class: downloadButtonClass()">
+                <i data-bind="class: downloadStateIcon()"></i>
+            </button>
+            <button type="reset" class="btn btn-primary" data-bind="click: downloadUrlFiles, disable: loading() || thingUrl() === '' || result() === null">
+                <i class="fas fa-redo-alt"></i>
+            </button>
+            <button type="reset" class="btn" data-bind="click: clearThingUrl, disable: loading() || thingUrl() === ''" title="Clear Text">
+                <i class="fas fa-times-circle"></i>
+            </button>
+        </div>
+        <div class="thingiverse-downloader-input-row">
+            <input 
+                    type="text" 
+                    class="input-large thingiverse-downloader-thing-input" 
+                    data-bind="value: overrideName, disable: loading"
+                    placeholder="Alternate name (optional)"
+                >
+        </div>
     </div>
 
     <span class="thingiverse-downloader-result-state" data-bind="html: getResultState()"></span>

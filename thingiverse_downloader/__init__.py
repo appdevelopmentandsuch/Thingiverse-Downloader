@@ -4,6 +4,7 @@ import requests
 import flask
 import os
 import octoprint.plugin
+import octoprint.settings
 
 
 class ThingiverseDownloaderPlugin(octoprint.plugin.TemplatePlugin,
@@ -11,7 +12,7 @@ class ThingiverseDownloaderPlugin(octoprint.plugin.TemplatePlugin,
                                   octoprint.plugin.SimpleApiPlugin,
                                   octoprint.plugin.SettingsPlugin):
     def get_settings_defaults(self):
-        return {"api_key": None, "output_directory": "/home/pi/.octoprint/uploads/models"}
+        return {"api_key": None, "output_directory": "models"}
 
     def get_assets(self):
         return dict(
@@ -27,7 +28,7 @@ class ThingiverseDownloaderPlugin(octoprint.plugin.TemplatePlugin,
 
     def get_api_commands(self):
         return dict(
-            download=["url"]
+            download=["url", "override_name"], preview=["url"]
         )
 
     def return_response(self, result, error=None):
@@ -61,7 +62,10 @@ class ThingiverseDownloaderPlugin(octoprint.plugin.TemplatePlugin,
 
             r = requests.get(url=URL)
 
-            name = r.json().get('name', None)
+            uploads_dir = octoprint.settings.Settings().getBaseFolder("uploads")
+
+            OUTPUT_DIRECTORY = "{0}/{1}".format(uploads_dir, self._settings.get(
+                ["output_directory"]).rstrip('/'))
 
             if name is None:
                 return self.return_response(result, "A name could not be parsed from the Thingiverse item.")

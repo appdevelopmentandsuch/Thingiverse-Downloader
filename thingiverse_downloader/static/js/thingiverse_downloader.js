@@ -6,7 +6,9 @@ $(function () {
 
         self.thingUrl = ko.observable();
 
-        self.loading = ko.observable();
+        self.overrideName = ko.observable("");
+
+        self.loading = ko.observable(false);
 
         self.result = ko.observable();
 

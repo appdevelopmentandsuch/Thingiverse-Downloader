@@ -12,9 +12,12 @@ Download and extract a thing from Thingiverse to your Octoprint instance, given 
 [![GitHub issues](https://img.shields.io/github/issues/appdevelopmentandsuch/Thingiverse-Downloader.svg)](https://GitHub.com/appdevelopmentandsuch/Thingiverse-Downloader/issues/)
 [![GitHub issues-closed](https://img.shields.io/github/issues-closed/appdevelopmentandsuch/Thingiverse-Downloader.svg)](https://GitHub.com/appdevelopmentandsuch/Thingiverse-Downloader/issues?q=is%3Aissue+is%3Aclosed)
 
-![Thingiverse-Downloader-Demo](https://user-images.githubusercontent.com/22528729/131264980-e5229140-c8f1-4535-a89e-3bcc0131b9cf.gif)
+![Thingiverse-Downloader-Demo-URL](https://user-images.githubusercontent.com/22528729/132111135-e4d87087-5645-49ed-ab6e-7c855ba8c664.gif)
+![Thingiverse-Downloader-Demo-ID](https://user-images.githubusercontent.com/22528729/132111134-a3c50855-d993-4b00-a5cb-8dcd93e94815.gif)
 
 ## Setup
+
+### Quick Install
 
 ![Thingiverse-Downloader-Install](https://user-images.githubusercontent.com/22528729/131595461-adb80ed1-4f57-4f24-ade5-fa84749ae93a.gif)
 
@@ -31,6 +34,6 @@ or manually using this URL:
 ## Configuration
 
 | Settings           | Description                                                                                                                      |
-|--------------------|----------------------------------------------------------------------------------------------------------------------------------|
-| *API Key*          | An API key / App Key acquired from the Thingiverse Developer Console found [here](https://www.thingiverse.com/developers).       |
-| *Output Directory* | The desired directory you wish to have the Thingiverse thing downloaded to. Recommend using `/home/pi/.octoprint/uploads/models` |
+| ------------------ | -------------------------------------------------------------------------------------------------------------------------------- |
+| _API Key_          | An API key / App Key acquired from the Thingiverse Developer Console found [here](https://www.thingiverse.com/developers).       |
+| _Output Directory_ | The desired directory you wish to have the Thingiverse thing downloaded to. Recommend using `/home/pi/.octoprint/uploads/models` |

@@ -3,6 +3,7 @@ from __future__ import absolute_import
 import requests
 import flask
 import os
+import errno
 import octoprint.plugin
 
 
@@ -10,6 +11,8 @@ class ThingiverseDownloaderPlugin(octoprint.plugin.TemplatePlugin,
                                   octoprint.plugin.AssetPlugin,
                                   octoprint.plugin.SimpleApiPlugin,
                                   octoprint.plugin.SettingsPlugin):
+    BASE_URL = "https://api.thingiverse.com/things"
+
     def get_settings_defaults(self):
         return {"api_key": None, "output_directory": "/home/pi/.octoprint/uploads/models"}
 
@@ -27,77 +30,128 @@ class ThingiverseDownloaderPlugin(octoprint.plugin.TemplatePlugin,
 
     def get_api_commands(self):
         return dict(
-            download=["url"]
+            download=["url"], preview=["url"]
         )
 
     def return_response(self, result, error=None):
         return flask.jsonify({"result": result, "error": error}) if error else flask.jsonify({"result": result})
 
-    def on_api_command(self, command, data):
-        result = False
-        if command == "download":
-            SEPERATOR = "https://www.thingiverse.com/thing:"
-            BASE_URL = "https://api.thingiverse.com/things"
+    def get_access_token_parameter(self, ACCESS_TOKEN):
+        return "?access_token={0}".format(ACCESS_TOKEN)
 
+    def get_thing_id_url(self, THING_ID, ACCESS_TOKEN):
+        param_access_token = self.get_access_token_parameter(ACCESS_TOKEN)
+        return "{0}/{1}/{2}".format(self.BASE_URL, THING_ID,
+                                    param_access_token)
+
+    def get_thing_id(self, thing_url):
+        thing_id = ''
+
+        for char in thing_url:
+            if char.isdigit():
+                thing_id += char
+            elif char.isdigit() is False and len(thing_id) > 0:
+                break
+
+        return thing_id
+
+    def get_thing_from_thingiverse(self, thing_id, access_token):
+        thing_id_url = self.get_thing_id_url(thing_id, access_token)
+        r = requests.get(url=thing_id_url)
+        return r.json()
+
+    def get_thing_download_files(self, thing_id, access_token):
+        param_access_token = self.get_access_token_parameter(access_token)
+        files_url = "{0}/{1}/files/{2}".format(self.BASE_URL, thing_id,
+                                               param_access_token)
+
+        r = requests.get(url=files_url)
+
+        return r.json()
+
+    def on_api_command(self, command, data):
+        response = False
+        try:
             ACCESS_TOKEN = self._settings.get(["api_key"])
 
             if ACCESS_TOKEN is None:
-                return self.return_response(result, "API Key not set.")
+                raise Exception("API Key not set.")
 
-            PARAM_ACCESS_TOKEN = "?access_token={0}".format(ACCESS_TOKEN)
+            PARAM_ACCESS_TOKEN = self.get_access_token_parameter(ACCESS_TOKEN)
 
-            THING_URL = data.get("url", None)
+            thing_url = data.get("url", None)
 
-            if THING_URL is None:
-                return self.return_response(result, "A Thingiverse URL was not supplied.")
+            if thing_url is None or thing_url == "":
+                raise Exception(
+                    "A Thingiverse URL / Thing ID was not supplied.")
 
-            THING_ID = THING_URL.partition(SEPERATOR)[2]
+            thing_id = self.get_thing_id(thing_url)
 
-            OUTPUT_DIRECTORY = "{0}".format(self._settings.get(
-                ["output_directory"]).rstrip('/'))
+            if not thing_id.isnumeric():
+                raise Exception("A Thing ID could not be parsed.")
 
-            URL = "{0}/{1}/{2}".format(BASE_URL, THING_ID,
-                                       PARAM_ACCESS_TOKEN)
+            thing = self.get_thing_from_thingiverse(thing_id, ACCESS_TOKEN)
 
-            r = requests.get(url=URL)
+            if command == "download":
 
-            name = r.json().get('name', None)
+                name = thing.get('name', '').encode(
+                    'ascii', 'ignore').decode("utf-8")  # Remove filename unsafe characters
 
-            if name is None:
-                return self.return_response(result, "A name could not be parsed from the Thingiverse item.")
+                if name == '':
+                    raise Exception(
+                        "A name could not be parsed from the Thingiverse item.")
 
-            name = name.encode('ascii', 'ignore')
+                thing_files = self.get_thing_download_files(
+                    thing_id, ACCESS_TOKEN)
 
-            FILES_URL = "{0}/{1}/files/{2}".format(BASE_URL, THING_ID,
-                                                   PARAM_ACCESS_TOKEN)
+                OUTPUT_DIRECTORY = "{0}".format(self._settings.get(
+                    ["output_directory"]).rstrip('/'))
 
-            r = requests.get(url=FILES_URL)
+                for thing_file in thing_files:
+                    thing_file_download_url = thing_file.get(
+                        "download_url", None)
 
-            data = r.json()
+                    if thing_file_download_url is None:
+                        raise Exception(
+                            "Could not find download url for thing {0}".format(name))
 
-            for item in data:
-                DOWNLOAD_URL = "{0}{1}".format(
-                    item["download_url"], PARAM_ACCESS_TOKEN)
+                    download_url = "{0}{1}".format(
+                        thing_file_download_url, PARAM_ACCESS_TOKEN)
 
-                r = requests.get(DOWNLOAD_URL)
+                    r = requests.get(url=download_url)
 
-                path = "{0}/{1}".format(OUTPUT_DIRECTORY, name)
-                filename = "{0}/{1}".format(path, item["name"])
+                    path = "{0}/{1}".format(OUTPUT_DIRECTORY, name)
+                    thing_file_name = thing_file.get("name", None)
 
-                try:
-                    os.makedirs(path)
-                except OSError:
-                    if not os.path.isdir(path):
-                        return self.return_response(result, "An error occurred while creating the model directory.")
+                    if thing_file_name is None:
+                        raise Exception(
+                            "Could not determine file part name while downloading {0}".format(name))
 
-                open(filename, 'wb').write(r.content)
+                    filename = "{0}/{1}".format(path, thing_file_name)
 
-            result = True
-            return self.return_response(result)
+                    try:
+                        os.makedirs(path)
+                    except OSError as e:
+                        if e.errno != errno.EEXIST:
+                            raise Exception(
+                                "An error occurred while creating the model directory.")
+
+                    open(filename, 'wb').write(r.content)
+
+                response = True
+            elif command == "preview":
+                response = {'url': thing.get(
+                    "thumbnail", ""), 'name': thing.get("name")}
+            else:
+                raise Exception("Invalid command provided")
+        except Exception as e:
+            return self.return_response(False, str(e))
+
+        return self.return_response(response)
 
 
 __plugin_name__ = "Thingiverse Downloader"
-__plugin_version__ = "0.0.0"
+__plugin_version__ = "0.1.0"
 __plugin_description__ = "Download and extract a thing from Thingiverse to your Octoprint instance, given a URL to the thing"
-__plugin_pythoncompat__ = ">=2.7,<4"
+__plugin_pythoncompat__ = ">=3,<4"
 __plugin_implementation__ = ThingiverseDownloaderPlugin()

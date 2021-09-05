@@ -1,12 +1,20 @@
-<div class="thingiverse-downloader">
+<div class="thingiverse-downloader-column">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <div class="thingiverse-downloader-input-wrapper">
-        <span class="thingiverse-downloader-input-title">Thingiverse URL</span>
-        <input type="text" class="input-large" data-bind="value: thingUrl, disable: loading"/>
-        <button class="btn btn-primary" data-bind="click: downloadUrlFiles">{{ _('Download') }}</button>
+        <input type="text" class="input-large thingiverse-downloader-input" data-bind="value: thingUrl, disable: loading"/>
+        <button class="btn" data-bind="click: downloadUrlFiles, disable: loading() || thingUrl() === '' || result() != null, class: downloadButtonClass()">
+            <i data-bind="class: downloadStateIcon()"></i>
+        </button>
+        <button type="reset" class="btn" data-bind="click: clearThingUrl(), disable: loading() || thingUrl() === ''" title="Clear Text">
+            <i class="fas fa-times-circle"></i>
+        </button>
     </div>
 
-    <span class="thingiverse-downloader-result-state" data-bind="html: getResultState()"></span>
-    <div data-bind="visible: previewUrl !== ''">
-        <img class="thingiverse-downloader-preview-img" data-bind="attr: { src: previewUrl }"></img>
+    <div 
+        class="thingiverse-downloader-preview-container" 
+        data-bind="class: previewData().url && previewData().name ? 'thingiverse-downloader-preview-container-visible' : '' "
+    >
+        <img class="thingiverse-downloader-preview-img" data-bind="attr: { src: previewData().url }"></img>
+        <span class="thingiverse-downloader-preview-name" data-bind="html: previewData().name"></span>
     </div>
 </div>

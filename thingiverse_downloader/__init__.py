@@ -70,55 +70,80 @@ class ThingiverseDownloaderPlugin(octoprint.plugin.TemplatePlugin,
         return r.json()
 
     def on_api_command(self, command, data):
-        result = False
-        ACCESS_TOKEN = self._settings.get(["api_key"])
+        try:
+            ACCESS_TOKEN = self._settings.get(["api_key"])
 
-        if ACCESS_TOKEN is None:
-            return self.return_response(result, "API Key not set.")
-        PARAM_ACCESS_TOKEN = self.get_access_token_parameter(ACCESS_TOKEN)
-        thing_url = data.get("url", None)
+            if ACCESS_TOKEN is None:
+                raise Exception("API Key not set.")
 
-        if thing_url is None or thing_url == "":
-            return self.return_response(result, "A Thingiverse URL / Thing ID was not supplied.")
+            PARAM_ACCESS_TOKEN = self.get_access_token_parameter(ACCESS_TOKEN)
 
-        thing_id = self.get_thing_id(thing_url)
+            thing_url = data.get("url", None)
 
-        thing = self.get_thing_from_thingiverse(thing_id, ACCESS_TOKEN)
+            if thing_url is None or thing_url == "":
+                raise Exception(
+                    "A Thingiverse URL / Thing ID was not supplied.")
 
-        if command == "download":
+            thing_id = self.get_thing_id(thing_url)
 
-            name = thing.get('name', '').encode('ascii', 'ignore')
+            if not thing_id.isnumeric():
+                raise Exception("A Thing ID could not be parsed.")
 
-            if name == '':
-                return self.return_response(result, "A name could not be parsed from the Thingiverse item.")
+            thing = self.get_thing_from_thingiverse(thing_id, ACCESS_TOKEN)
 
-            things = self.get_thing_download_files(thing_id, ACCESS_TOKEN)
+            if command == "download":
 
-            OUTPUT_DIRECTORY = "{0}".format(self._settings.get(
-                ["output_directory"]).rstrip('/'))
+                name = thing.get('name', '').encode(
+                    'ascii', 'ignore').decode("utf-8")  # Remove filename unsafe characters
 
-            for thing in things:
-                download_url = "{0}{1}".format(
-                    thing["download_url"], PARAM_ACCESS_TOKEN)
+                if name == '':
+                    raise Exception(
+                        "A name could not be parsed from the Thingiverse item.")
 
-                r = requests.get(url=download_url)
+                thing_files = self.get_thing_download_files(
+                    thing_id, ACCESS_TOKEN)
 
-                path = "{0}/{1}".format(OUTPUT_DIRECTORY, name)
-                filename = "{0}/{1}".format(path, thing["name"])
+                OUTPUT_DIRECTORY = "{0}".format(self._settings.get(
+                    ["output_directory"]).rstrip('/'))
 
-                try:
-                    os.makedirs(path)
-                except OSError as e:
-                    if e.errno != errno.EEXIST:
-                        return self.return_response(result, "An error occurred while creating the model directory.")
+                for thing_file in thing_files:
+                    thing_file_download_url = thing_file.get(
+                        "download_url", None)
 
-                open(filename, 'wb').write(r.content)
+                    if thing_file_download_url is None:
+                        raise Exception(
+                            "Could not find download url for thing {0}".format(name))
 
-            result = True
-            return self.return_response(result)
+                    download_url = "{0}{1}".format(
+                        thing_file_download_url, PARAM_ACCESS_TOKEN)
 
-        elif command == "preview":
-            return self.return_response(thing.get("thumbnail", ""))
+                    r = requests.get(url=download_url)
+
+                    path = "{0}/{1}".format(OUTPUT_DIRECTORY, name)
+                    thing_file_name = thing_file.get("name", None)
+
+                    if thing_file_name is None:
+                        raise Exception(
+                            "Could not determine file part name while downloading {0}".format(name))
+
+                    filename = "{0}/{1}".format(path, thing_file_name)
+
+                    try:
+                        os.makedirs(path)
+                    except OSError as e:
+                        if e.errno != errno.EEXIST:
+                            raise Exception(
+                                "An error occurred while creating the model directory.")
+
+                    open(filename, 'wb').write(r.content)
+
+                return self.return_response(True)
+
+            elif command == "preview":
+                return self.return_response({'url': thing.get("thumbnail", ""), 'name': thing.get("name")})
+
+        except Exception as e:
+            return self.return_response(False, str(e))
 
 
 __plugin_name__ = "Thingiverse Downloader"

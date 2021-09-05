@@ -2,56 +2,74 @@ $(function () {
     function ThingiverseDownloader(parameters) {
         var self = this;
 
+        const ENDPOINT_THINGIVERSE_DOWNLOADER_PLUGIN =
+            "plugin/thingiverse_downloader";
+
+        const EMPTY_PREVIEW = { name: null, url: null };
+
+        self.callPlugin = function (data) {
+            return {
+                url: `${API_BASEURL}${ENDPOINT_THINGIVERSE_DOWNLOADER_PLUGIN}`,
+                type: "POST",
+                dataType: "json",
+                data,
+                contentType: "application/json; charset=UTF-8",
+            };
+        };
+
         self.settings = parameters[0];
 
-        self.thingUrl = ko.observable();
+        self.thingUrl = ko.observable("");
 
         self.overrideName = ko.observable("");
 
         self.loading = ko.observable(false);
 
-        self.result = ko.observable();
+        self.result = ko.observable(null);
+
+        self.previewData = ko.observable(EMPTY_PREVIEW);
 
         self.thingUrl.subscribe(function () {
-            if (self.result() != null && self.loading() === false) {
-                self.result(null);
-            }
+            self.fetchPreviewImage();
+            self.result(null);
         });
 
-        self.onBeforeBinding = function () {
+        self.clearThingUrl = function () {
             self.thingUrl("");
-            self.loading(false);
-            self.result(null);
         };
 
-        self.getResultState = function () {
-            let resultStatus = "Download Status: ";
-            if (self.result() === true) {
-                resultStatus += "<b>Completed</b> &#9989;";
-            } else if (self.result() === false) {
-                resultStatus += "<b>Failed</b> &#10060;";
-            } else if (self.loading() === true) {
-                resultStatus += "<b>Downloading...</b>";
-            } else if (self.loading() === false) {
-                resultStatus += "<b>Not started</b>";
-            }
-
-            return resultStatus;
+        self.fetchPreviewImage = function () {
+            $.ajax(
+                self.callPlugin(
+                    JSON.stringify({
+                        command: "preview",
+                        url: self.thingUrl(),
+                    })
+                )
+            )
+                .then(function ({ result, error }) {
+                    if (error == undefined) {
+                        self.previewData(result);
+                    } else {
+                        self.previewData(EMPTY_PREVIEW);
+                    }
+                })
+                .catch(function () {
+                    self.previewData(EMPTY_PREVIEW);
+                });
         };
 
         self.downloadUrlFiles = function () {
             self.loading(true);
             self.result(null);
-            $.ajax({
-                url: API_BASEURL + "plugin/thingiverse_downloader",
-                type: "POST",
-                dataType: "json",
-                data: JSON.stringify({
-                    command: "download",
-                    url: self.thingUrl(),
-                }),
-                contentType: "application/json; charset=UTF-8",
-            })
+            $.ajax(
+                self.callPlugin(
+                    JSON.stringify({
+                        command: "download",
+                        url: self.thingUrl(),
+                    })
+                )
+            )
                 .then(function ({ result }) {
                     self.loading(false);
                     self.result(result);
@@ -60,6 +78,32 @@ $(function () {
                     self.loading(false);
                     self.result(false);
                 });
+        };
+
+        self.downloadButtonClass = function () {
+            let className = "btn-primary";
+            if (self.result() === true) {
+                className = "btn-success";
+            } else if (self.result() === false) {
+                className = "btn-danger";
+            }
+            return className;
+        };
+
+        self.downloadStateIcon = function () {
+            let icon = "";
+            if (self.result() === true) {
+                icon =
+                    "fas fa-check-square thingiverse-downloader-result-success";
+            } else if (self.result() === false) {
+                icon =
+                    "fas fa-exclamation-triangle thingiverse-downloader-result-failed";
+            } else if (self.loading() === true) {
+                icon = "fas fa-spinner fa-spin";
+            } else if (self.loading() === false) {
+                icon = "fas fa-download";
+            }
+            return icon;
         };
     }
 

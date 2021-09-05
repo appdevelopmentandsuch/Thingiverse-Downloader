@@ -1,4 +1,5 @@
-<div class="thingiverse-downloader">
+<div class="thingiverse-downloader-column">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <div class="thingiverse-downloader-input-wrapper">
         <div class="thingiverse-downloader-input-row">
             <input 
@@ -28,6 +29,11 @@
         </div>
     </div>
 
-    <span class="thingiverse-downloader-result-state" data-bind="html: getResultState()"></span>
-    <i class="fas fa-spinner fa-spin fa-2x thingiverse-downloader-loading-icon" data-bind="visible: loading"></i>
+    <div 
+        class="thingiverse-downloader-preview-container" 
+        data-bind="class: previewData().url && previewData().name ? 'thingiverse-downloader-preview-container-visible' : '' "
+    >
+        <img class="thingiverse-downloader-preview-img" data-bind="attr: { src: previewData().url }"></img>
+        <span class="thingiverse-downloader-preview-name" data-bind="html: previewData().name"></span>
+    </div>
 </div>

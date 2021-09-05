@@ -33,7 +33,7 @@ or manually using this URL:
 
 ## Configuration
 
-| Settings           | Description                                                                                                                      |
-| ------------------ | -------------------------------------------------------------------------------------------------------------------------------- |
-| _API Key_          | An API key / App Key acquired from the Thingiverse Developer Console found [here](https://www.thingiverse.com/developers).       |
-| _Output Directory_ | The desired directory you wish to have the Thingiverse thing downloaded to. Recommend using `/home/pi/.octoprint/uploads/models` |
+| Settings           | Description                                                                                                                |
+| ------------------ | -------------------------------------------------------------------------------------------------------------------------- |
+| _API Key_          | An API key / App Key acquired from the Thingiverse Developer Console found [here](https://www.thingiverse.com/developers). |
+| _Output Directory_ | The desired directory you wish to have the Thingiverse thing downloaded to. Recommend using `models`                       |

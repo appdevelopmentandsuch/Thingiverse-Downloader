@@ -21,6 +21,8 @@ $(function () {
 
         self.thingUrl = ko.observable("");
 
+        self.overrideName = ko.observable("");
+
         self.loading = ko.observable(false);
 
         self.result = ko.observable(null);
@@ -32,8 +34,9 @@ $(function () {
             self.result(null);
         });
 
-        self.clearThingUrl = function () {
+        self.clearAll = function () {
             self.thingUrl("");
+            self.overrideName("");
         };
 
         self.fetchPreviewImage = function () {
@@ -65,6 +68,7 @@ $(function () {
                     JSON.stringify({
                         command: "download",
                         url: self.thingUrl(),
+                        override_name: self.overrideName(),
                     })
                 )
             )

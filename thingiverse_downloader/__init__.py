@@ -5,6 +5,7 @@ import flask
 import os
 import errno
 import octoprint.plugin
+import octoprint.settings
 
 
 class ThingiverseDownloaderPlugin(octoprint.plugin.TemplatePlugin,
@@ -14,7 +15,7 @@ class ThingiverseDownloaderPlugin(octoprint.plugin.TemplatePlugin,
     BASE_URL = "https://api.thingiverse.com/things"
 
     def get_settings_defaults(self):
-        return {"api_key": None, "output_directory": "/home/pi/.octoprint/uploads/models"}
+        return {"api_key": None, "output_directory": "models"}
 
     def get_assets(self):
         return dict(
@@ -30,7 +31,7 @@ class ThingiverseDownloaderPlugin(octoprint.plugin.TemplatePlugin,
 
     def get_api_commands(self):
         return dict(
-            download=["url"], preview=["url"]
+            download=["url", "override_name"], preview=["url"]
         )
 
     def return_response(self, result, error=None):
@@ -93,8 +94,11 @@ class ThingiverseDownloaderPlugin(octoprint.plugin.TemplatePlugin,
             thing = self.get_thing_from_thingiverse(thing_id, ACCESS_TOKEN)
 
             if command == "download":
+                override_name = data.get("override_name", "")
 
-                name = thing.get('name', '').encode(
+                name = override_name if override_name != "" else thing.get(
+                    'name', '')
+                name = name.encode(
                     'ascii', 'ignore').decode("utf-8")  # Remove filename unsafe characters
 
                 if name == '':
@@ -104,7 +108,9 @@ class ThingiverseDownloaderPlugin(octoprint.plugin.TemplatePlugin,
                 thing_files = self.get_thing_download_files(
                     thing_id, ACCESS_TOKEN)
 
-                OUTPUT_DIRECTORY = "{0}".format(self._settings.get(
+                uploads_dir = octoprint.settings.Settings().getBaseFolder("uploads")
+
+                OUTPUT_DIRECTORY = "{0}/{1}".format(uploads_dir, self._settings.get(
                     ["output_directory"]).rstrip('/'))
 
                 for thing_file in thing_files:

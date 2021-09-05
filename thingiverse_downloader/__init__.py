@@ -141,7 +141,8 @@ class ThingiverseDownloaderPlugin(octoprint.plugin.TemplatePlugin,
 
             elif command == "preview":
                 return self.return_response({'url': thing.get("thumbnail", ""), 'name': thing.get("name")})
-
+            else:
+                raise Exception("Invalid command provided")
         except Exception as e:
             return self.return_response(False, str(e))
 

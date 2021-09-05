@@ -34,8 +34,9 @@ $(function () {
             self.result(null);
         });
 
-        self.clearThingUrl = function () {
+        self.clearAll = function () {
             self.thingUrl("");
+            self.overrideName("");
         };
 
         self.fetchPreviewImage = function () {
@@ -67,6 +68,7 @@ $(function () {
                     JSON.stringify({
                         command: "download",
                         url: self.thingUrl(),
+                        override_name: self.overrideName(),
                     })
                 )
             )

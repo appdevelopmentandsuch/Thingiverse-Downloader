@@ -94,8 +94,11 @@ class ThingiverseDownloaderPlugin(octoprint.plugin.TemplatePlugin,
             thing = self.get_thing_from_thingiverse(thing_id, ACCESS_TOKEN)
 
             if command == "download":
+                override_name = data.get("override_name", "")
 
-                name = thing.get('name', '').encode(
+                name = override_name if override_name != "" else thing.get(
+                    'name', '')
+                name = name.encode(
                     'ascii', 'ignore').decode("utf-8")  # Remove filename unsafe characters
 
                 if name == '':

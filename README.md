@@ -12,8 +12,8 @@ Download and extract a thing from Thingiverse to your Octoprint instance, given 
 [![GitHub issues](https://img.shields.io/github/issues/appdevelopmentandsuch/Thingiverse-Downloader.svg)](https://GitHub.com/appdevelopmentandsuch/Thingiverse-Downloader/issues/)
 [![GitHub issues-closed](https://img.shields.io/github/issues-closed/appdevelopmentandsuch/Thingiverse-Downloader.svg)](https://GitHub.com/appdevelopmentandsuch/Thingiverse-Downloader/issues?q=is%3Aissue+is%3Aclosed)
 
-![Thingiverse-Downloader-Demo-URL](https://user-images.githubusercontent.com/22528729/132111135-e4d87087-5645-49ed-ab6e-7c855ba8c664.gif)
-![Thingiverse-Downloader-Demo-ID](https://user-images.githubusercontent.com/22528729/132111134-a3c50855-d993-4b00-a5cb-8dcd93e94815.gif)
+![Thingiverse-Downloader-Demo-URL](https://user-images.githubusercontent.com/22528729/132139046-1b1b4dc5-dfb8-4084-bb2d-1d3c27e53bb4.gif)
+![Thingiverse-Downloader-Demo-ID](https://user-images.githubusercontent.com/22528729/132139044-446589ee-4ab9-4962-ac1d-04c991062782.gif)
 
 ## Setup
 

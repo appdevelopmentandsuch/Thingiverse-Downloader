@@ -70,6 +70,7 @@ class ThingiverseDownloaderPlugin(octoprint.plugin.TemplatePlugin,
         return r.json()
 
     def on_api_command(self, command, data):
+        response = False
         try:
             ACCESS_TOKEN = self._settings.get(["api_key"])
 
@@ -137,14 +138,16 @@ class ThingiverseDownloaderPlugin(octoprint.plugin.TemplatePlugin,
 
                     open(filename, 'wb').write(r.content)
 
-                return self.return_response(True)
-
+                response = True
             elif command == "preview":
-                return self.return_response({'url': thing.get("thumbnail", ""), 'name': thing.get("name")})
+                response = {'url': thing.get(
+                    "thumbnail", ""), 'name': thing.get("name")}
             else:
                 raise Exception("Invalid command provided")
         except Exception as e:
             return self.return_response(False, str(e))
+
+        return self.return_response(response)
 
 
 __plugin_name__ = "Thingiverse Downloader"

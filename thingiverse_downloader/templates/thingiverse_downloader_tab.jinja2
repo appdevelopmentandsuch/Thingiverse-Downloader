@@ -1,7 +1,7 @@
 <div class="thingiverse-downloader-column">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <div class="thingiverse-downloader-input-wrapper">
-        <input type="text" class="input-large thingiverse-downloader-input" data-bind="value: thingUrl, disable: loading"/>
+        <input type="text" class="input-large thingiverse-downloader-input" data-bind="value: thingUrl, disable: loading" title="i.e. https://www.thingiverse.com/thing:123456 or 123456">
         <button class="btn" data-bind="click: downloadUrlFiles, disable: loading() || thingUrl() === '' || result() != null, class: downloadButtonClass()">
             <i data-bind="class: downloadStateIcon()"></i>
         </button>

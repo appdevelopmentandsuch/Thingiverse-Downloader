@@ -157,7 +157,7 @@ class ThingiverseDownloaderPlugin(octoprint.plugin.TemplatePlugin,
 
 
 __plugin_name__ = "Thingiverse Downloader"
-__plugin_version__ = "0.2.0"
+__plugin_version__ = "0.3.0"
 __plugin_description__ = "Download and extract a thing from Thingiverse to your Octoprint instance, given a URL to the thing"
 __plugin_pythoncompat__ = ">=3,<4"
 __plugin_implementation__ = ThingiverseDownloaderPlugin()

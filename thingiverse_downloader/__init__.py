@@ -155,9 +155,27 @@ class ThingiverseDownloaderPlugin(octoprint.plugin.TemplatePlugin,
 
         return self.return_response(response)
 
+    def get_update_information(*args, **kwargs):
+        return dict(
+            updateplugindemo=dict(
+                displayName=__plugin_name__,
+                displayVersion=__plugin_version__,
+
+                type="github_release",
+                current=__plugin_version__,
+                user="appdevelopmentandsuch",
+                repo="Thingiverse-Downloader",
+
+                pip="https://github.com/someUser/OctoPrint-UpdatePluginDemo/archive/{target}.zip"
+            )
+        )
+
 
 __plugin_name__ = "Thingiverse Downloader"
 __plugin_version__ = "0.3.0"
 __plugin_description__ = "Download and extract a thing from Thingiverse to your Octoprint instance, given a URL to the thing"
 __plugin_pythoncompat__ = ">=3,<4"
 __plugin_implementation__ = ThingiverseDownloaderPlugin()
+__plugin_hooks__ = {
+    "octoprint.plugin.softwareupdate.check_config": __plugin_implementation__.get_update_information
+}

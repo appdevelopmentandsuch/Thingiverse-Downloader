@@ -29,7 +29,6 @@ or manually using this URL:
 1. Install the [Octoprint-Slic3r](https://plugins.octoprint.org/plugins/slic3r/) plugin in order to view / upload STL files to your Octoprint instance.
 2. Install the Thingiverse-Downloader plugin either from the Plugin manager, or manually.
 3. Acquire an API key from the Thingiverse Developer Console (tutorial to come).
-4. Set the desired output directory for the downloads, files you can interact with can be found in `~/.octoprint/uploads`, however there is currently an issue using the `~` character, so the absolute directory path should be used for setting output, I use `/home/pi/.octoprint/uploads/models`, where models is the directory I store all my models in.
 
 ## Configuration
 

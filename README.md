@@ -26,7 +26,11 @@ or manually using this URL:
 
     https://github.com/appdevelopmentandsuch/Thingiverse-Downloader/archive/main.zip
 
-1. Install the [Octoprint-Slic3r](https://plugins.octoprint.org/plugins/slic3r/) plugin in order to view / upload STL files to your Octoprint instance.
+1. Install one of the following in order to view / upload STL files to your Octoprint instance.
+   - [Octoprint-Slic3r](https://plugins.octoprint.org/plugins/slic3r/)
+   - [STL Viewer](https://plugins.octoprint.org/plugins/stlviewer/)
+   - [Cura Legacy](https://plugins.octoprint.org/plugins/curalegacy/)
+   - [Full-featured Slicer](https://plugins.octoprint.org/plugins/slicer/)
 2. Install the Thingiverse-Downloader plugin either from the Plugin manager, or manually.
 3. Acquire an API key from the Thingiverse Developer Console (tutorial to come).
 

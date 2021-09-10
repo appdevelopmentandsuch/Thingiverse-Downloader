@@ -157,7 +157,7 @@ class ThingiverseDownloaderPlugin(octoprint.plugin.TemplatePlugin,
 
     def get_update_information(*args, **kwargs):
         return dict(
-            updateplugindemo=dict(
+            thingiverse_downloader=dict(
                 displayName=__plugin_name__,
                 displayVersion=__plugin_version__,
 
@@ -166,7 +166,7 @@ class ThingiverseDownloaderPlugin(octoprint.plugin.TemplatePlugin,
                 user="appdevelopmentandsuch",
                 repo="Thingiverse-Downloader",
 
-                pip="https://github.com/someUser/OctoPrint-UpdatePluginDemo/archive/{target}.zip"
+                pip="https://github.com/appdevelopmentandsuch/Thingiverse-Downloader/archive/{target}.zip"
             )
         )
 
